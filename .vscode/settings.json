@@ -1,0 +1,29 @@
+{
+    "files.associations": {
+        "cmsis_os.h": "c",
+        "spi.h": "c",
+        "main.h": "c",
+        "nrf.h": "c",
+        "oled_task.h": "c",
+        "functionkey_task.h": "c",
+        "stdio.h": "c",
+        "oled_ui.h": "c",
+        "comms_task.h": "c",
+        "config.h": "c",
+        "functionkey.h": "c",
+        "rocker.h": "c",
+        "gpio.h": "c",
+        "rocker_task.h": "c",
+        "math_bsp.h": "c",
+        "delay.h": "c",
+        "swtimer.h": "c",
+        "u8g2.h": "c",
+        "zigbee.h": "c",
+        "wlt_config.h": "c",
+        "usart.h": "c",
+        "string.h": "c",
+        "dma.h": "c",
+        "analog.h": "c",
+        "adc_bsp.h": "c"
+    }
+}
