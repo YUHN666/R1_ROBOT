@@ -51,6 +51,7 @@
 
 #define PC12 0x12
 #define PC11 0xC1
+#define PE1 0xE1
 
 
 // 地址
