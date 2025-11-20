@@ -16,6 +16,7 @@ void Analog_Init(Analog_t* analog)
         (void)Analog_GetFilteredValue(analog);
     }
 }
+// 摇杆用-----------------------------------------------------------------
 // 取原始值（读取引脚的模拟电压值）
 uint16_t Analog_GetOriginalValue(Analog_t* analog)
 {
@@ -39,6 +40,7 @@ uint16_t Analog_GetFilteredValue(Analog_t* analog)
     analog->filter.mean = analog->filter.sum / ANALOG_FILTER_SIZE;          //计算新的滤波值
     return analog->filter.mean;
 }
+// 电池用-----------------------------------------------------------------
 // 计算原始映射值
 float Analog_GetOriginalMappedValue(Analog_t* analog)
 {
