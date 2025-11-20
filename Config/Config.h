@@ -10,6 +10,7 @@
 #include "delay.h"
 #include "FUNCTIONKEY_task.h"
 #include "COMMS_task.h"
+#include "Battery.h"
 
 
 
@@ -48,9 +49,9 @@
 #define PA8 0xA8
 #define PG7 0x07
 #define PG8 0x08
-
 #define PC12 0x12
 #define PC11 0xC1
+#define PE1 0xE1
 
 
 // 地址

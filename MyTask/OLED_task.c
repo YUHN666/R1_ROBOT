@@ -20,8 +20,42 @@ extern uint8_t Forest_txData[13];
 extern uint8_t Forest_rxData[5];
 
 
-
+extern Battery_t battery;
 extern FunctionKey_t FunctionKey[KEY_NUM];
+// 电池-----------------------------------------------------------------------
+void Battery_inform()
+{
+  u8g2_SetFontDirection(&oled_display.oled_ui.u8g2, 1);            //设置字体方向为水平
+  u8g2_SetFont(&oled_display.oled_ui.u8g2, u8g2_font_battery19_tn);    //设置字体为电池图标
+  u8g2_SetDrawColor(&oled_display.oled_ui.u8g2, 1);                //设置绘图颜色为白色
+  switch (battery.energy)                            //横向打印电池图标
+  {
+      case Battery_Energy_0pct:
+          u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 107, 20, "0");
+          break;
+      case Battery_Energy_20pct:
+          u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 107, 20, "1");
+          break;
+      case Battery_Energy_40pct:
+          u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 107, 20, "2");
+          break;
+      case Battery_Energy_60pct:
+          u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 107, 20, "3");
+          break;
+      case Battery_Energy_80pct:
+          u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 107, 20, "4");
+          break;
+      case Battery_Energy_100pct:
+          u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 107, 20, "5");
+          break;
+      default://充电动画
+          u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 107, 20, "0");      //打印一个电池显示err的图标来表示错误
+          u8g2_SetFontDirection(&oled_display.oled_ui.u8g2, 0);
+          u8g2_SetFont(&oled_display.oled_ui.u8g2, u8g2_font_4x6_tr);  
+          u8g2_DrawStr(&oled_display.oled_ui.u8g2, 111, 7, "err");
+          break;
+  }
+}
 
 // 调参解算(放页面里)
 // -----------------------------------------------------------------------------------
@@ -218,7 +252,7 @@ void OledDisplay_Control_Page(void)
   u8g2_SetFont(&oled_display.oled_ui.u8g2, u8g2_font_5x8_tf);
   u8g2_SetFontDirection(&oled_display.oled_ui.u8g2, 0);
   // 显示 “控制模式 ”
-  u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 45, 55, "ControlMode");
+  u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 45, 10, "ControlMode");
   // 显示摇杆值
   sprintf(temp, "%d %d", LeftRocker.state.x, LeftRocker.state.y);
   u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 5, 110, temp);
@@ -233,6 +267,8 @@ void OledDisplay_Control_Page(void)
   Control_txData[3] = RightRocker.state.x;
   Control_txData[4] = RightRocker.state.y;
   zigbee_transmit(Control_txData, 5, R1_ROBOT); // 发送数据
+  // 电池
+  Battery_inform();
   u8g2_SendBuffer(&oled_display.oled_ui.u8g2);
   u8g2_ClearBuffer(&oled_display.oled_ui.u8g2);
 }
