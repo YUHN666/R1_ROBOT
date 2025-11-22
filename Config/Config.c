@@ -13,9 +13,9 @@ Rocker_t LeftRocker =
     .x = 
     {
         .analog = {.adc_bsp = &adcBsp_adc1, .rank = 1},
-        .offset = -160,
+        .offset = -125,
         .sign = 1,
-        .map_positive = 1.080,
+        .map_positive = 1.050,
         .map_negative = 1.030,
         
     },
@@ -28,7 +28,7 @@ Rocker_t LeftRocker =
         .map_negative = 1.110, 
         
     },
-    .deadzone = 7,
+    .deadzone = 8,
 };
 Rocker_t RightRocker =
 {
@@ -51,7 +51,7 @@ Rocker_t RightRocker =
         .map_negative = 1.050, 
         
     },
-    .deadzone = 6,
+    .deadzone = 8,
 };
 
 // zigbee-----------------------------------------------------------------------
@@ -147,8 +147,8 @@ Battery_t battery =
     .analog_voltage = {                                                     
         .adc_bsp = &adcBsp_adc1,                                        
         .rank = 5,                                                      
-        .map_k = 3.3f / 4096.0f *4.96f,                                	
-        .map_b = -0.33                                                 	
+        .map_k = 4.12f / 4096.0f *4.96f,                                	
+        .map_b = -0.33                                                 	 
     },                                                                  
     .threshold = {                                                          
         ._0pct = 6.5,._20pct = 6.8,._40pct = 7.1,                           
@@ -181,17 +181,21 @@ void Config_Init(void)
     AdcBsp_Init(&adcBsp_adc1);
     Rocker_Init(&LeftRocker);
     Rocker_Init(&RightRocker);
+    Battery_Init(&battery);
+    // zigbee初始化
+    // 开启接收中断，由于数据不定长，故使用 DMA中断
+    HAL_UARTEx_ReceiveToIdle_DMA(zigbee_state.huart, zigbee_rxBuffer, 100);	
+    // 关闭 DMA传输过半中断，防止数据丢失
+    __HAL_DMA_DISABLE_IT(&hdma_uart4_rx, DMA_IT_HT);
+    // 更改地址和工作模式后必须重新上电才有效
+    zigbee_init(R1_GAMEPAD, R1_ROBOT, MASTER);
+
+
 
     // OLED初始化
     OledUI_Init(&oled_display.oled_ui);
     OledDisplay_Init();
 
-    // zigbee初始化
-    // 开启接收中断，由于数据不定长，故使用 DMA中断
-	HAL_UARTEx_ReceiveToIdle_DMA(zigbee_state.huart, zigbee_rxBuffer, 100);	
-    // 关闭 DMA传输过半中断，防止数据丢失
-    __HAL_DMA_DISABLE_IT(&hdma_uart4_rx, DMA_IT_HT);
-    // 更改地址和工作模式后必须重新上电才有效
-    zigbee_init(R1_GAMEPAD, R1_ROBOT, MASTER);
+    
 }
 

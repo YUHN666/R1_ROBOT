@@ -46,15 +46,14 @@ void Battery_inform()
           u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 107, 20, "4");
           break;
       case Battery_Energy_100pct:
-          u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 107, 20, "5");
+          u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 107, 13, "5");
           break;
-      default://充电动画
-          u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 107, 20, "0");      //打印一个电池显示err的图标来表示错误
-          u8g2_SetFontDirection(&oled_display.oled_ui.u8g2, 0);
-          u8g2_SetFont(&oled_display.oled_ui.u8g2, u8g2_font_4x6_tr);  
-          u8g2_DrawStr(&oled_display.oled_ui.u8g2, 111, 7, "err");
-          break;
+      default: break;
   }
+  u8g2_SetFont(&oled_display.oled_ui.u8g2, u8g2_font_5x8_tf);
+  u8g2_SetFontDirection(&oled_display.oled_ui.u8g2, 0);
+  sprintf(temp, "%.2fV ", battery.battery_voltage);
+  u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 80, 20, temp);
 }
 
 // 调参解算(放页面里)
@@ -261,7 +260,7 @@ void OledDisplay_Control_Page(void)
   // 显示手柄时间
   // temp不能太小，否则会发生数组越界，导致 timerTick值改变
   sprintf(temp, "%d", timerTick); 
-  u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 60, 75, temp);
+  u8g2_DrawUTF8(&oled_display.oled_ui.u8g2, 10, 20, temp);
   Control_txData[1] = LeftRocker.state.x;
   Control_txData[2] = LeftRocker.state.y;
   Control_txData[3] = RightRocker.state.x;

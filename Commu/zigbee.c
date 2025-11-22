@@ -256,10 +256,9 @@ void ResetDevice(uint16_t ID)
 	zigbee_txBuffer[2] = ID >> 8; 
 	zigbee_txBuffer[3] = ID & 0xFF;
 	// 协议类型
-	zigbee_txBuffer[4] = zigbee_state.ProtocolType >> 8; 
-	zigbee_txBuffer[5] = zigbee_state.ProtocolType & 0xFF;
+	zigbee_txBuffer[4] = 0x00; 
+	zigbee_txBuffer[5] = 0x10;
 	HAL_UART_Transmit_DMA(zigbee_state.huart, zigbee_txBuffer, 7);
-	zigbee_state.rx_completed = 0;
 }
 // 加载配置
 void load_Conf(void)
@@ -296,8 +295,8 @@ void zigbee_init(uint16_t MyAddr, uint16_t DstAddr, uint8_t sendmode)
 	write_DstAddr(DstAddr);
 	// 设置工作模式
 	write_DevMode(sendmode);
-	// 获取配置	
-	get_Conf();			
+	// 复位
+	ResetDevice(MyAddr);	
 }
 
 

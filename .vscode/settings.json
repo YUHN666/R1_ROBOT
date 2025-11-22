@@ -24,6 +24,7 @@
         "string.h": "c",
         "dma.h": "c",
         "analog.h": "c",
-        "adc_bsp.h": "c"
+        "adc_bsp.h": "c",
+        "swtimer_task.h": "c"
     }
 }
